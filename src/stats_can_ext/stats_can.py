@@ -15,6 +15,13 @@ import requests
 import json
 from typing import Literal, Optional
 
+from .sc import (
+    download_tables,
+    zip_update_tables,
+    zip_table_to_dataframe,
+    list_zipped_tables
+)
+
 class StatsCan:
     def __init__(self):
         self.table_metadata = pd.DataFrame(self._get_all_tables())
@@ -40,3 +47,19 @@ class StatsCan:
                 self.table_metadata["title"].str.contains("|".join(keywords))
             ][["title", "cansimId"]]
         
+    def download_tables(tables: list[str], csv: bool =True, path: Optional[str] = None) -> list:
+        return download_tables(tables, path, csv)
+
+    def zip_update_tables(csv : bool = True, path: Optional[str] = None):
+        return zip_update_tables(path, csv)
+
+    def table_to_df(table : str, path : Optional[str] = None) -> pd.DataFrame:
+        return zip_table_to_dataframe(table, path)
+
+    def list_tables(path : Optional[str] = None) -> list[str]:
+        return list_zipped_tables(path)
+
+if __name__ == '__main__':
+    sc = StatsCan()
+    import code
+    code.interact(local=locals())
