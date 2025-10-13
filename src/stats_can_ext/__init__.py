@@ -29,12 +29,14 @@ __all__ = [
     "get_changed_series_list",
     "get_cube_metadata",
     "get_series_info_from_vector",
+    
 ]
-from stats_can import sc, scwds
-from stats_can.sc import code_sets_to_df_dict, vectors_to_df, zip_table_to_dataframe
-from stats_can.scwds import (
+from stats_can_ext import sc, scwds
+from stats_can_ext.sc import code_sets_to_df_dict, vectors_to_df, zip_table_to_dataframe
+from stats_can_ext.scwds import (
     get_changed_cube_list,
     get_changed_series_list,
     get_cube_metadata,
     get_series_info_from_vector,
 )
+from stats_can_ext.stats_can import StatsCan

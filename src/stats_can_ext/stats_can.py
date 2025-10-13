@@ -58,8 +58,3 @@ class StatsCan:
 
     def list_tables(path : Optional[str] = None) -> list[str]:
         return list_zipped_tables(path)
-
-if __name__ == '__main__':
-    sc = StatsCan()
-    import code
-    code.interact(local=locals())
