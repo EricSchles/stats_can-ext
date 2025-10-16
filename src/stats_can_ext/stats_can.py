@@ -47,14 +47,14 @@ class StatsCan:
                 self.table_metadata["title"].str.contains("|".join(keywords))
             ][["title", "cansimId"]]
         
-    def download_tables(tables: list[str], csv: bool =True, path: Optional[str] = None) -> list:
+    def download_tables(self, tables: list[str], csv: bool =True, path: Optional[str] = None) -> list:
         return download_tables(tables, path, csv)
 
-    def zip_update_tables(csv : bool = True, path: Optional[str] = None):
+    def zip_update_tables(self, csv : bool = True, path: Optional[str] = None):
         return zip_update_tables(path, csv)
 
-    def table_to_df(table : str, path : Optional[str] = None) -> pd.DataFrame:
+    def table_to_df(self, table : str, path : Optional[str] = None) -> pd.DataFrame:
         return zip_table_to_dataframe(table, path)
 
-    def list_tables(path : Optional[str] = None) -> list[str]:
+    def list_tables(self, path : Optional[str] = None) -> list[str]:
         return list_zipped_tables(path)
