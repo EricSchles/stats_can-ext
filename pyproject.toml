@@ -1,6 +1,6 @@
 [project]
 name = "stats_can_ext"
-version = "0.0.1"
+version = "0.0.2"
 description = "Interface ontop of StatsCan"
 authors = [{ name = "Eric Schles" }]
 requires-python = ">=3.10,<4.0"
