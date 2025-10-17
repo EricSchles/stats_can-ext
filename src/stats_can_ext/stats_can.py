@@ -15,13 +15,6 @@ import requests
 import json
 from typing import Literal, Optional
 
-from .sc import (
-    download_tables,
-    zip_update_tables,
-    zip_table_to_dataframe,
-    list_zipped_tables
-)
-
 class StatsCan:
     def __init__(self):
         self.table_metadata = pd.DataFrame(self._get_all_tables())
@@ -30,31 +23,26 @@ class StatsCan:
     def _normalize(self):
         self.table_metadata["title_normed"] = self.table_metadata["cubeTitleEn"].str.lower()
         self.table_metadata["title"] = self.table_metadata["cubeTitleEn"]
-        
-    def _get_all_tables(self):
-        url = "https://www150.statcan.gc.ca/t1/wds/rest/getAllCubesList"
+
+    def _get_request(self, url: str) -> dict:
         response = requests.get(url)
         return json.loads(response.content)
+    
+    def _get_all_tables(self):
+        url = "https://www150.statcan.gc.ca/t1/wds/rest/getAllCubesList"
+        return self._get_request(url)
 
     def search(self, keywords: list[str], normalize : Optional[bool] = True) -> pd.DataFrame:
         if normalize:
             keywords = [keyword.lower() for keyword in keywords] 
             return self.table_metadata[
                 self.table_metadata["title_normed"].str.contains("|".join(keywords))
-            ][["title", "cansimId"]]
+            ][["title", "cansimId", "productId"]]
         else:
             return self.table_metadata[
                 self.table_metadata["title"].str.contains("|".join(keywords))
-            ][["title", "cansimId"]]
+            ][["title", "cansimId", "productId"]]
         
-    def download_tables(self, tables: list[str], csv: bool =True, path: Optional[str] = None) -> list:
-        return download_tables(tables, path, csv)
-
-    def zip_update_tables(self, csv : bool = True, path: Optional[str] = None):
-        return zip_update_tables(path, csv)
-
-    def table_to_df(self, table : str, path : Optional[str] = None) -> pd.DataFrame:
-        return zip_table_to_dataframe(table, path)
-
-    def list_tables(self, path : Optional[str] = None) -> list[str]:
-        return list_zipped_tables(path)
+    def download_table(self, table: str,  path: Optional[str] = None) -> list:
+        url = f"https://www150.statcan.gc.ca/t1/wds/rest/getFullTableDownloadCSV/{table}/en"
+        return self._get_request(url)
